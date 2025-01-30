@@ -15,8 +15,8 @@ app.get("/", (req, res) => {
 });
 // set port, listen for requests
 
-require('./router/user_routes.js')(app)
-require('./router/project_routes.js')(app)
+require('./router/user.routes.js')(app)
+require('./router/project.routes.js')(app)
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
