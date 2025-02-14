@@ -1,0 +1,36 @@
+{
+   "user_name":"Ali",
+  "user_password":"abc",
+  "user_email":"abc@gmail.com"
+}
+
+{
+    "user_name":"Kamran",
+  "user_password":"xyz",
+  "user_email":"xyz@gmail.com"
+}
+
+{
+    "user_name":"Bilal",
+  "user_password":"ghf",
+  "user_email":"ghf@gmail.com"
+}
+
+
+{
+     "project_title":"CMS_Project",
+  "project_created":"Ali"
+
+}
+
+{
+     "project_title":"CRUD_Project",
+  "project_created":"Kamran"
+
+}
+
+{
+     "project_title":"Simple_Project",
+  "project_created":"Bilal"
+
+}
