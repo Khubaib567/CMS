@@ -5,20 +5,23 @@ if(process.env.ENV !== "production"){
 const express = require("express");
 const app = express();
 const {limiter} = require("./utils/limiter");
+const {authRole} = require("./utils/auth-config.js")
 
 // PARSE REQUESTS OF CONTENT-TYPE - APPLICATION/JSON
 app.use(express.json());
+
 // PARSE REQUESTS OF CONTENT-TYPE - APPLICATION/X-WWW-FORM-URLENCODED
 app.use(express.urlencoded({ extended: true }));
 
 // APPLY RATE-LIMIT AS MIDDLEWARE
 app.use(limiter)
+
 // SIMPLE ROUTE
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to CRUD application." });
 });
-// SET PORT, LISTEN FOR REQUESTS
 
+// SET PORT, LISTEN FOR REQUESTS
 require('./router/user.routes.js')(app)
 require('./router/project.routes.js')(app)
 

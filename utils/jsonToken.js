@@ -13,7 +13,7 @@ const generateToken = async (res,userid)=>{
     maxAge: 30*24*60*60*1000 // expires in 30 days.
   })
 
-  console.log(token)
+  // console.log(token)
   token = token.replace('jwt=','')
   return token
 
