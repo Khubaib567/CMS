@@ -35,6 +35,7 @@ const authRole =  () => {
     // console.log(token)
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);  
     const userId = decoded.id  
+    console.log(userId)
     const user = await User.findByPk(userId, { include: ["projects"] });
     // console.log(user.role)
     if (user.role !== process.env.ADMIN) {
