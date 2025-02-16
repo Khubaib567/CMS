@@ -6,12 +6,10 @@ require('dotenv').config()
 
 const auth = () =>  {
     return (req, res, next) => {
-        let token;
-
-        header = req.headers.cookie;
-        token = header && header.replace('jwt=','')
-        // AUTHENTICATED THE USERS
         console.log('Access the Private Route!')
+        // GET THE TOKEN
+        const header = req.headers['authorization']
+        const token = header && header.split(' ')[1]
 
         if (token == null) return res.status(401).send({ message: "Access denied!" });
         // AUTHENTICATED THE USERS
@@ -26,18 +24,19 @@ const auth = () =>  {
 
 const authRole =  () => {
     return async (req, res, next) => {
-    let token;
     // AUTHORIZED THE USERS BASED ON ROLE
     console.log('Access the Private Route!')
+    // GET THE TOKEN
+    const header = req.headers['authorization']
+    const token = header && header.split(' ')[1]
+    console.log(token)
     // DECODED THE JWT TOKEN
-    token = req.headers.cookie;
-    token = token.replace('jwt=','')
-    // console.log(token)
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);  
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+    // console.log(decoded)  
     const userId = decoded.id  
-    console.log(userId)
+    // console.log(userId)
     const user = await User.findByPk(userId, { include: ["projects"] });
-    // console.log(user.role)
+    // // console.log(user.role)
     if (user.role !== process.env.ADMIN) {
         res.status(401)
         return res.send({ message : 'Not allowed!' })

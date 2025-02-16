@@ -2,10 +2,10 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 // CONTROLLER FOR GENERATE TOKEN WHEN REGISTER REQUEST
-const generateToken = async (res,userid)=>{
+const generateToken = async (res, uuid)=> {
   let token;
   // console.log(userid)
-  token = jwt.sign( {id: userid}, process.env.ACCESS_TOKEN, { expiresIn: 60 * 60});
+  token = jwt.sign( {id: uuid}, process.env.ACCESS_TOKEN, { expiresIn: 60 * 60});
   await res.cookie('jwt',token, {
     httpOnly:true,
     secure: process.env.NODE !== 'development', // HIDE COOKIES IN PRODUCTION
@@ -16,8 +16,6 @@ const generateToken = async (res,userid)=>{
   // console.log(token)
   token = token.replace('jwt=','')
   return token
-
-  
 }
 
 // CONTROLLER FOR REMOVE TOKEN WHEN LOGOUT REQUEST

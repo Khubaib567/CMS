@@ -3,35 +3,44 @@ const {generateToken,removeToken} = require('../utils/jsonToken');
 const User = db.users;
 const Project = db.projects;
 const Op = db.Sequelize.Op;
-// Create and Save a new User
-exports.create = async (req, res) => {
 
+// CREATE AND SAVE A NEW USER
+exports.create = async (req, res) => {
   try {
     if (!req.body.user_name) {
       res.status(400).send({ message: "Content can not be empty!" });
       return;
     }
-
-    // Create a User object
-    const user = {
+    // CREATE A USER OBJECT
+    const obj = {
       user_name: req.body.user_name,
       user_password: req.body.user_password,
       user_email: req.body.user_email,
-      updated: req.body.updated ? req.body.updated : false
+      updated: req.body.updated ? req.body.updated : false,
     };
 
-    // Save User in the database
-    const data = await User.create(user);
-    const token = await generateToken(res, data.id);
+    // SAVE USER IN THE DATABASE
+    const data = await User.create(obj);
 
-    res.send({ data, token });
+    // FETCH THE NEWLY CREATED USER USING FINDONE
+    const user = await User.findOne({ where: { id: data.id } });
+    if (!user) {
+       return res.status(404).json({ message: "User not found after creation" });
+    }
+
+    // GENERATE TOKEN 
+    const token = await generateToken(res, user.id);
+    // UPDATE THE USER WITH INSERT THE TOKEN
+    const user_with_jwt = await user.update({ token });
+    res.send({ user_with_jwt });
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occurred while creating the User."
     });
   }
 };
-// Retrieve all Users from the database.
+
+// RETRIEVE ALL USERS FROM THE DATABASE.
 exports.findAll = async (req, res) => {
   try {
     const data = await User.findAll({ include: ["projects"] });
@@ -43,7 +52,8 @@ exports.findAll = async (req, res) => {
   }
   
 };
-// Find a single User with an id
+
+// FIND A SINGLE USER WITH AN ID
 exports.findOne = async (req, res) => {
   try {
     const id = req.params.id;
@@ -63,7 +73,7 @@ exports.findOne = async (req, res) => {
   }
   
 };
-// Update a User by the id in the request
+// UPDATE A USER BY THE ID IN THE REQUEST
 exports.update = async (req, res) => {
   try {
     const id = req.params.id;
@@ -83,7 +93,7 @@ exports.update = async (req, res) => {
   }
   
 };
-// Delete a User with the specified id in the request
+// DELETE A USER WITH THE SPECIFIED ID IN THE REQUEST
 exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
@@ -105,7 +115,7 @@ exports.delete = async (req, res) => {
   }
  
 };
-// Delete all Users from the database.
+// DELETE ALL USERS FROM THE DATABASE.
 exports.deleteAll = async (req, res) => {
   try {
     const nums = await User.destroy({ where: {}, truncate: false });
@@ -117,7 +127,7 @@ exports.deleteAll = async (req, res) => {
   }
   
 };
-// Find all published Users
+// FIND ALL PUBLISHED USERS
 exports.findAllUpdated = async (req, res) => {
   try {
     const data = await User.findAll({ where: { updated: true } });
