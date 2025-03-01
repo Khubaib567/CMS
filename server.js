@@ -1,11 +1,10 @@
 if(process.env.ENV !== "production"){
-  require('dotenv').config()
+  require('dotenv').config({path : './.secrets/.env'})
 }
 
 const express = require("express");
 const app = express();
 const {limiter} = require("./utils/limiter");
-const {authRole} = require("./utils/auth-config.js")
 
 // PARSE REQUESTS OF CONTENT-TYPE - APPLICATION/JSON
 app.use(express.json());

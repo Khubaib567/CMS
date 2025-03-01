@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "server": "node --env-file=.env --watch server.js "
+    "server": "node --watch server.js "
   },
   "keywords": [],
   "author": "",
